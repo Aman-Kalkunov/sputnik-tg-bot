@@ -48,7 +48,7 @@ const allTime = [
 const infoOptions = [
   [
     { text: "О нас", callback_data: "about" },
-    { text: "Ррасписание", callback_data: "timetable" },
+    { text: "Расписание", callback_data: "timetable" },
   ],
   [
     { text: "Стоимость занятий", callback_data: "price" },
