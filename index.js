@@ -1,5 +1,5 @@
 const TelegramApi = require("node-telegram-bot-api");
-const adminId = 540756101;
+const adminId = 936880467;
 const token = "6580839606:AAFH19wqumqjaULUFP2Q2eXAvBT6LqEcHHA";
 const {
   startText,
@@ -97,7 +97,6 @@ bot.onText(/\/start/, (message) => {
 });
 
 bot.onText(/\/info/, (message) => {
-  console.log(message);
   bot.removeListener("callback_query");
   const currentChatId = message.chat.id;
 
