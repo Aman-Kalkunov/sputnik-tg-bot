@@ -1,7 +1,7 @@
 const getScheduleDate = (targetDayId, isWeightliftin) => {
   const today = new Date();
   const currentDay = today.getDay();
-  let targetDay = currentDay === 7 ? targetDayId + 1 : targetDayId - currentDay;
+  let targetDay = currentDay === 0 ? targetDayId : targetDayId - currentDay;
   if (isWeightliftin && currentDay === 6) {
     targetDay = targetDayId + 1;
   }
@@ -20,7 +20,7 @@ const getAvailableDays = (days, isWeightlifti) => {
   if (today === 6 && isWeightlifti) {
     return days;
   }
-  if (today !== 7) {
+  if (today !== 0) {
     return days.filter((day) => day.id >= today);
   }
   return days;
