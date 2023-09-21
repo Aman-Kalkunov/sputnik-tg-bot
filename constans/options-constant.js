@@ -107,7 +107,7 @@ const weightliftingDay = [
   { id: 5, day: days[5], date: `${getScheduleDate(5, true)}` },
 ];
 
-const scheduleAllDayOptions = {
+const getScheduleAllDayOptions = () => ({
   reply_markup: JSON.stringify({
     inline_keyboard: getAvailableDays(scheduleAllDay).map((day) => {
       return [
@@ -118,32 +118,36 @@ const scheduleAllDayOptions = {
       ];
     }),
   }),
+});
+
+const getStretchingDayOptions = () => {
+  return {
+    reply_markup: JSON.stringify({
+      inline_keyboard: getAvailableDays(stretchingDay).map((day) => {
+        return [
+          {
+            text: `${day.day} ${day.date}`,
+            callback_data: `scheduleDay:${day.id}`,
+          },
+        ];
+      }),
+    }),
+  };
 };
 
-const stretchingDayOptions = {
-  reply_markup: JSON.stringify({
-    inline_keyboard: getAvailableDays(stretchingDay).map((day) => {
-      return [
-        {
-          text: `${day.day} ${day.date}`,
-          callback_data: `scheduleDay:${day.id}`,
-        },
-      ];
+const getWeightliftingDayOptions = () => {
+  return {
+    reply_markup: JSON.stringify({
+      inline_keyboard: getAvailableDays(weightliftingDay, true).map((day) => {
+        return [
+          {
+            text: `${day.day} ${day.date}`,
+            callback_data: `scheduleDay:${day.id}`,
+          },
+        ];
+      }),
     }),
-  }),
-};
-
-const weightliftingDayOptions = {
-  reply_markup: JSON.stringify({
-    inline_keyboard: getAvailableDays(weightliftingDay, true).map((day) => {
-      return [
-        {
-          text: `${day.day} ${day.date}`,
-          callback_data: `scheduleDay:${day.id}`,
-        },
-      ];
-    }),
-  }),
+  };
 };
 
 const timeOptions = () => {
@@ -187,9 +191,9 @@ const weightliftingTimeOptions = () => {
 module.exports = {
   infoCommandOptions,
   workoutTypeOptions,
-  scheduleAllDayOptions,
-  weightliftingDayOptions,
-  stretchingDayOptions,
+  getScheduleAllDayOptions,
+  getWeightliftingDayOptions,
+  getStretchingDayOptions,
   timeOptions,
   weightliftingTimeOptions,
   stretchingTimeOptions,
