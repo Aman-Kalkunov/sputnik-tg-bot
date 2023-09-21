@@ -13,12 +13,12 @@ const {
 
 const {
   workoutTypeOptions,
-  weightliftingDayOptions,
-  stretchingDayOptions,
+  getWeightliftingDayOptions,
+  getStretchingDayOptions,
   timeOptions,
   weightliftingTimeOptions,
   stretchingTimeOptions,
-  scheduleAllDayOptions,
+  getScheduleAllDayOptions,
   infoCommandOptions,
   days,
 } = require("./constans/options-constant");
@@ -160,7 +160,7 @@ bot.onText(/\/schedule/, (message) => {
           bot.removeAllListeners("callback_query");
 
           bot
-            .sendMessage(currentChatId, "Доступные дни", scheduleAllDayOptions)
+            .sendMessage(currentChatId, "Доступные дни", getScheduleAllDayOptions())
             .then(() => {
               bot.addListener("callback_query", (query) =>
                 scheduleDayHandler(
@@ -180,7 +180,7 @@ bot.onText(/\/schedule/, (message) => {
             .sendMessage(
               currentChatId,
               "Доступные дни",
-              weightliftingDayOptions
+              getWeightliftingDayOptions()
             )
             .then(() => {
               bot.addListener("callback_query", (query) =>
@@ -198,7 +198,7 @@ bot.onText(/\/schedule/, (message) => {
           bot.removeAllListeners("callback_query");
 
           bot
-            .sendMessage(currentChatId, "Доступные дни", stretchingDayOptions)
+            .sendMessage(currentChatId, "Доступные дни", getStretchingDayOptions())
             .then(() => {
               bot.addListener("callback_query", (query) =>
                 scheduleDayHandler(
@@ -214,7 +214,7 @@ bot.onText(/\/schedule/, (message) => {
           bot.removeAllListeners("callback_query");
 
           bot
-            .sendMessage(currentChatId, "Доступные дни", scheduleAllDayOptions)
+            .sendMessage(currentChatId, "Доступные дни", getScheduleAllDayOptions())
             .then(() => {
               bot.addListener("callback_query", (query) =>
                 scheduleDayHandler(query, currentChatId, timeOptions, "free")
