@@ -87,7 +87,7 @@ const stretchingNightTime = [
   [{ text: "19:00", callback_data: `scheduleTime~19:00` }],
 ];
 
-const scheduleAllDay = [
+const getScheduleAllDay = () => [
   { id: 1, day: days[1], date: `${getScheduleDate(1)}` },
   { id: 2, day: days[2], date: `${getScheduleDate(2)}` },
   { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
@@ -96,12 +96,12 @@ const scheduleAllDay = [
   { id: 6, day: days[6], date: `${getScheduleDate(6)}` },
 ];
 
-const stretchingDay = [
+const getStretchingDay = () => [
   { id: 2, day: days[2], date: `${getScheduleDate(2)}` },
   { id: 6, day: days[6], date: `${getScheduleDate(6)}` },
 ];
 
-const weightliftingDay = [
+const getWeightliftingDay = () => [
   { id: 1, day: days[1], date: `${getScheduleDate(1, true)}` },
   { id: 3, day: days[3], date: `${getScheduleDate(3, true)}` },
   { id: 5, day: days[5], date: `${getScheduleDate(5, true)}` },
@@ -109,7 +109,7 @@ const weightliftingDay = [
 
 const getScheduleAllDayOptions = () => ({
   reply_markup: JSON.stringify({
-    inline_keyboard: getAvailableDays(scheduleAllDay).map((day) => {
+    inline_keyboard: getAvailableDays(getScheduleAllDay()).map((day) => {
       return [
         {
           text: `${day.day} ${day.date}`,
@@ -123,7 +123,7 @@ const getScheduleAllDayOptions = () => ({
 const getStretchingDayOptions = () => {
   return {
     reply_markup: JSON.stringify({
-      inline_keyboard: getAvailableDays(stretchingDay).map((day) => {
+      inline_keyboard: getAvailableDays(getStretchingDay()).map((day) => {
         return [
           {
             text: `${day.day} ${day.date}`,
@@ -138,14 +138,16 @@ const getStretchingDayOptions = () => {
 const getWeightliftingDayOptions = () => {
   return {
     reply_markup: JSON.stringify({
-      inline_keyboard: getAvailableDays(weightliftingDay, true).map((day) => {
-        return [
-          {
-            text: `${day.day} ${day.date}`,
-            callback_data: `scheduleDay:${day.id}`,
-          },
-        ];
-      }),
+      inline_keyboard: getAvailableDays(getWeightliftingDay(), true).map(
+        (day) => {
+          return [
+            {
+              text: `${day.day} ${day.date}`,
+              callback_data: `scheduleDay:${day.id}`,
+            },
+          ];
+        }
+      ),
     }),
   };
 };
