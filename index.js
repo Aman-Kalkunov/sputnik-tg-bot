@@ -1,5 +1,6 @@
 const TelegramApi = require("node-telegram-bot-api");
 const adminId = 1991291074;
+const devId = 540756101;
 const token = "6580839606:AAFH19wqumqjaULUFP2Q2eXAvBT6LqEcHHA";
 const {
   startText,
@@ -30,6 +31,21 @@ bot.setMyCommands([
   { command: "/schedule", description: "Записаться" },
 ]);
 
+// Обработка ошибок для асинхронных операций
+const asyncErrorHandler = (fn) => {
+  return async (message) => {
+    try {
+      await fn(message);
+    } catch (error) {
+      console.error("Произошла ошибка:", error);
+      bot.sendMessage(
+        devId,
+        `Произошла ошибка asyncErrorHandler: ${error.message}`
+      );
+    }
+  };
+};
+
 const getUserName = (user) => {
   const name = user.first_name;
   const lastName = user.last_name || "";
@@ -38,189 +54,245 @@ const getUserName = (user) => {
   const fullName = `${lastName} ${name} ${username}`;
   return fullName.trim();
 };
-const sayHello = (currentChatId) => bot.sendMessage(currentChatId, startText);
 
-const questionHandler = (message, userId) => {
-  const text = `Пользователь ${getUserName(message.chat)} задал вопрос:
-
-${message.text}`;
-
-  bot.sendMessage(adminId, text);
-  bot.removeListener("message");
+const sayHello = async (currentChatId) => {
+  try {
+    await bot.sendMessage(currentChatId, startText);
+  } catch (error) {
+    bot.sendMessage(devId, `Произошла ошибка sayHello: ${error.message}`);
+  }
 };
 
-const scheduleHandler = (query, id, workoutName) => {
-  if (query.data.includes("scheduleTime")) {
-    bot.answerCallbackQuery(query.id);
-    bot.removeListener("callback_query");
+const questionHandler = async (message) => {
+  try {
+    const text = `Пользователь ${getUserName(message.chat)} задал вопрос:\n\n${
+      message.text
+    }`;
+    await bot.sendMessage(adminId, text);
+    bot.removeListener("message");
+  } catch (error) {
+    bot.sendMessage(
+      devId,
+      `Произошла ошибка questionHandler: ${error.message}`
+    );
+  }
+};
 
-    const time = query.data.split("~")[1];
-    const currentChatId = query.message.chat.id;
+const scheduleHandler = async (query, id, workoutName) => {
+  try {
+    if (query.data.includes("scheduleTime")) {
+      bot.answerCallbackQuery(query.id);
+      bot.removeListener("callback_query");
 
-    return bot
-      .sendMessage(
+      const time = query.data.split("~")[1];
+      const currentChatId = query.message.chat.id;
+
+      await bot.sendMessage(
         adminId,
         `${getUserName(query.from)} записался на ${
           workoutNames[workoutName]
         }: ${days[id]} - ${time}`
-      )
-      .then(() => {
-        bot.sendMessage(
-          currentChatId,
-          `Вы записаны на ${workoutNames[workoutName]}: ${days[id]} - ${time}`
-        );
-      });
+      );
+
+      await bot.sendMessage(
+        currentChatId,
+        `Вы записаны на ${workoutNames[workoutName]}: ${days[id]} - ${time}`
+      );
+    }
+  } catch (error) {
+    bot.sendMessage(
+      devId,
+      `Произошла ошибка scheduleHandler: ${error.message}`
+    );
   }
 };
 
-const scheduleDayHandler = (query, currentChatId, timeOptions, workoutName) => {
-  if (query.data.includes("scheduleDay")) {
-    bot.answerCallbackQuery(query.id);
-    bot.removeAllListeners("callback_query");
+const scheduleDayHandler = async (
+  query,
+  currentChatId,
+  timeOptions,
+  workoutName
+) => {
+  try {
+    if (query.data.includes("scheduleDay")) {
+      bot.answerCallbackQuery(query.id);
+      bot.removeAllListeners("callback_query");
 
-    const id = query.data.split(":")[1];
+      const id = query.data.split(":")[1];
 
-    const isNightTime = workoutName === "stretching" && id == 2;
-    const options = timeOptions(isNightTime);
+      const isNightTime = workoutName === "stretching" && id == 2;
+      const options = timeOptions(isNightTime);
 
-    bot.sendMessage(currentChatId, "Доступное время", options).then(() => {
+      await bot.sendMessage(currentChatId, "Доступное время", options);
+
       bot.addListener("callback_query", (query) =>
         scheduleHandler(query, id, workoutName)
       );
-    });
+    }
+  } catch (error) {
+    bot.sendMessage(
+      devId,
+      `Произошла ошибка scheduleDayHandler: ${error.message}`
+    );
   }
 };
 
-bot.onText(/\/start/, (message) => {
-  const currentChatId = message.chat.id;
-  sayHello(currentChatId);
-});
+bot.onText(
+  /\/start/,
+  asyncErrorHandler(async (message) => {
+    const currentChatId = message.chat.id;
+    await sayHello(currentChatId);
+  })
+);
 
-bot.onText(/\/info/, (message) => {
-  bot.removeListener("callback_query");
-  const currentChatId = message.chat.id;
+bot.onText(
+  /\/info/,
+  asyncErrorHandler(async (message) => {
+    const currentChatId = message.chat.id;
+    await bot.sendMessage(currentChatId, "Информация", infoCommandOptions);
 
-  bot.sendMessage(currentChatId, "Информация", infoCommandOptions).then(() => {
-    bot.addListener("callback_query", (query) => {
+    bot.addListener("callback_query", async (query) => {
       const currentChatId = query.message.chat.id;
       const data = query.data;
 
-      if (data === "about") {
-        bot.answerCallbackQuery(query.id);
-        sayHello(currentChatId);
-      }
-      if (data === "price") {
-        bot.answerCallbackQuery(query.id);
-        bot.sendPhoto(currentChatId, "./assets/price.jpg", {
-          caption: priceText,
-        });
-      }
-      if (data === "timetable") {
-        bot.answerCallbackQuery(query.id);
-        bot.sendPhoto(currentChatId, "./assets/timetable.jpg");
-      }
-      if (data === "promotions") {
-        bot.answerCallbackQuery(query.id);
-        bot.sendMessage(currentChatId, promotionsText);
-      }
-      if (data === "firstTime") {
-        bot.answerCallbackQuery(query.id);
-        bot.sendPhoto(currentChatId, "./assets/firstTime.jpg", {
-          caption: firstTimeText,
-        });
-      }
-      if (data === "contacts") {
-        bot.answerCallbackQuery(query.id);
-        bot.sendMessage(currentChatId, contactsText);
-      }
-      if (data === "question") {
-        bot.answerCallbackQuery(query.id);
-        bot.removeListener("callback_query");
-        bot.sendMessage(currentChatId, questionText).then(() => {
+      try {
+        if (data === "about") {
+          bot.answerCallbackQuery(query.id);
+          bot.removeAllListeners("callback_query");
+          sayHello(currentChatId);
+        }
+        if (data === "price") {
+          bot.answerCallbackQuery(query.id);
+          bot.removeAllListeners("callback_query");
+          await bot.sendPhoto(currentChatId, "./assets/price.jpg", {
+            caption: priceText,
+          });
+        }
+        if (data === "timetable") {
+          bot.answerCallbackQuery(query.id);
+          bot.removeAllListeners("callback_query");
+          await bot.sendPhoto(currentChatId, "./assets/timetable.jpg");
+        }
+        if (data === "promotions") {
+          bot.answerCallbackQuery(query.id);
+          bot.removeAllListeners("callback_query");
+          await bot.sendMessage(promotionsText);
+        }
+        if (data === "firstTime") {
+          bot.answerCallbackQuery(query.id);
+          bot.removeAllListeners("callback_query");
+          await bot.sendPhoto(currentChatId, "./assets/firstTime.jpg", {
+            caption: firstTimeText,
+          });
+        }
+        if (data === "contacts") {
+          bot.answerCallbackQuery(query.id);
+          bot.removeAllListeners("callback_query");
+          await bot.sendMessage(currentChatId, contactsText);
+        }
+        if (data === "question") {
+          bot.answerCallbackQuery(query.id);
+          bot.removeListener("callback_query");
+          await bot.sendMessage(currentChatId, questionText);
           bot.addListener("message", (message) =>
             questionHandler(message, currentChatId)
           );
-        });
+        }
+      } catch (error) {
+        bot.sendMessage(devId, `Произошла ошибка info: ${error.message}`);
       }
     });
-  });
-});
+  })
+);
 
-bot.onText(/\/schedule/, (message) => {
-  const currentChatId = message.chat.id;
-  bot
-    .sendMessage(currentChatId, "Выберите тип тренировки", workoutTypeOptions)
-    .then(() => {
-      bot.addListener("callback_query", (query) => {
-        const currentChatId = query.message.chat.id;
-        const data = query.data;
+bot.onText(
+  /\/schedule/,
+  asyncErrorHandler(async (message) => {
+    const currentChatId = message.chat.id;
+    await bot.sendMessage(
+      currentChatId,
+      "Выберите тип тренировки",
+      workoutTypeOptions
+    );
 
+    bot.addListener("callback_query", async (query) => {
+      const currentChatId = query.message.chat.id;
+      const data = query.data;
+
+      try {
         if (data === "crossfit") {
           bot.answerCallbackQuery(query.id);
           bot.removeAllListeners("callback_query");
 
-          bot
-            .sendMessage(currentChatId, "Доступные дни", getScheduleAllDayOptions())
-            .then(() => {
-              bot.addListener("callback_query", (query) =>
-                scheduleDayHandler(
-                  query,
-                  currentChatId,
-                  timeOptions,
-                  "crossfit"
-                )
-              );
-            });
+          await bot.sendMessage(
+            currentChatId,
+            "Доступные дни",
+            getScheduleAllDayOptions()
+          );
+
+          bot.addListener("callback_query", (query) =>
+            scheduleDayHandler(query, currentChatId, timeOptions, "crossfit")
+          );
         }
         if (data === "weightlifting") {
           bot.answerCallbackQuery(query.id);
           bot.removeAllListeners("callback_query");
 
-          bot
-            .sendMessage(
+          await bot.sendMessage(
+            currentChatId,
+            "Доступные дни",
+            getWeightliftingDayOptions()
+          );
+
+          bot.addListener("callback_query", (query) =>
+            scheduleDayHandler(
+              query,
               currentChatId,
-              "Доступные дни",
-              getWeightliftingDayOptions()
+              weightliftingTimeOptions,
+              "weightlifting"
             )
-            .then(() => {
-              bot.addListener("callback_query", (query) =>
-                scheduleDayHandler(
-                  query,
-                  currentChatId,
-                  weightliftingTimeOptions,
-                  "weightlifting"
-                )
-              );
-            });
+          );
         }
         if (data === "stretching") {
           bot.answerCallbackQuery(query.id);
           bot.removeAllListeners("callback_query");
 
-          bot
-            .sendMessage(currentChatId, "Доступные дни", getStretchingDayOptions())
-            .then(() => {
-              bot.addListener("callback_query", (query) =>
-                scheduleDayHandler(
-                  query,
-                  currentChatId,
-                  stretchingTimeOptions,
-                  "stretching"
-                )
-              );
-            });
+          await bot.sendMessage(
+            currentChatId,
+            "Доступные дни",
+            getStretchingDayOptions()
+          );
+
+          bot.addListener("callback_query", (query) =>
+            scheduleDayHandler(
+              query,
+              currentChatId,
+              stretchingTimeOptions,
+              "stretching"
+            )
+          );
         }
         if (data === "free") {
           bot.removeAllListeners("callback_query");
 
-          bot
-            .sendMessage(currentChatId, "Доступные дни", getScheduleAllDayOptions())
-            .then(() => {
-              bot.addListener("callback_query", (query) =>
-                scheduleDayHandler(query, currentChatId, timeOptions, "free")
-              );
-            });
+          await bot.sendMessage(
+            currentChatId,
+            "Доступные дни",
+            getScheduleAllDayOptions()
+          );
+
+          bot.addListener("callback_query", (query) =>
+            scheduleDayHandler(query, currentChatId, timeOptions, "free")
+          );
         }
-      });
+      } catch (error) {
+        bot.sendMessage(devId, `Произошла ошибка schedule: ${error.message}`);
+      }
     });
+  })
+);
+
+bot.on("polling_error", (error) => {
+  console.error("Ошибка в polling:", error);
+  bot.sendMessage(devId, `Произошла ошибка polling: ${error.message}`);
 });
