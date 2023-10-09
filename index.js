@@ -176,7 +176,7 @@ bot.onText(
         if (data === "promotions") {
           bot.answerCallbackQuery(query.id);
           bot.removeAllListeners("callback_query");
-          await bot.sendMessage(promotionsText);
+          await bot.sendMessage(currentChatId, promotionsText);
         }
         if (data === "firstTime") {
           bot.answerCallbackQuery(query.id);
