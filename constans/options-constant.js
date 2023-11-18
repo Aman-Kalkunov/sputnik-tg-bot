@@ -163,7 +163,7 @@ const timeOptions = (isSut) => {
     return {
       reply_markup: JSON.stringify({
         inline_keyboard: sutTime.map((row) => {
-          return sutTime.map((time) => {
+          return row.map((time) => {
             return {
               text: time,
               callback_data: `scheduleTime~${time}`,
