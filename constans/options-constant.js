@@ -45,6 +45,12 @@ const allTime = [
   ["20:00"],
 ];
 
+const sutTime = [
+  ["10:00"],
+  ["11:00"],
+  ["12:00"],
+];
+
 const infoOptions = [
   [
     { text: "О нас", callback_data: "about" },
@@ -81,7 +87,7 @@ const infoCommandOptions = {
 
 const weightliftingTime = ["17:00"];
 
-const stretchingTime = [[{ text: "9:00", callback_data: `scheduleTime~9:00` }]];
+const stretchingTime = [[{ text: "10:00", callback_data: `scheduleTime~10:00` }]];
 
 const stretchingNightTime = [
   [{ text: "19:00", callback_data: `scheduleTime~19:00` }],
@@ -152,10 +158,18 @@ const getWeightliftingDayOptions = () => {
   };
 };
 
-const timeOptions = () => {
+const timeOptions = (isSut) => {
   return {
     reply_markup: JSON.stringify({
       inline_keyboard: allTime.map((row) => {
+        if (isSut) {
+          return sutTime.map((time) => {
+            return {
+              text: time,
+              callback_data: `scheduleTime~${time}`,
+            };
+          });
+        }
         return row.map((time) => {
           return {
             text: time,
