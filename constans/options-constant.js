@@ -35,20 +35,14 @@ const days = [
   "Пятница",
   "Суббота",
 ];
-const allTime = [
-  ["7:00", "8:00"],
+/* ["7:00", "8:00"],
   ["9:00", "10:00"],
-  ["11:00", "12:00"],
-  ["13:00", "14:00"],
-  ["15:00"],
+  ["11:00", "12:00"], */
+const allTime = [
+  ["12:00", "13:00"],
+  ["14:00", "15:00"],
   ["18:00", "19:00"],
   ["20:00"],
-];
-
-const sutTime = [
-  ["10:00"],
-  ["11:00"],
-  ["12:00"],
 ];
 
 const infoOptions = [
@@ -70,6 +64,7 @@ const workoutType = [
   [{ text: "Кроссфит", callback_data: "crossfit" }],
   [{ text: "Тяжелая атлетика", callback_data: "weightlifting" }],
   [{ text: "Stretching", callback_data: "stretching" }],
+  [{ text: "Бокс для детей", callback_data: "box" }],
   [{ text: "Пробная бесплатная тренировка", callback_data: "free" }],
 ];
 
@@ -87,7 +82,7 @@ const infoCommandOptions = {
 
 const weightliftingTime = ["17:00"];
 
-const stretchingTime = [[{ text: "10:00", callback_data: `scheduleTime~10:00` }]];
+const stretchingTime = [[{ text: "9:00", callback_data: `scheduleTime~9:00` }]];
 
 const stretchingNightTime = [
   [{ text: "19:00", callback_data: `scheduleTime~19:00` }],
@@ -105,6 +100,10 @@ const getScheduleAllDay = () => [
 const getStretchingDay = () => [
   { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
   { id: 6, day: days[6], date: `${getScheduleDate(6)}` },
+];
+
+const getBoxDay = () => [
+  { id: 4, day: days[4], date: `${getScheduleDate(4)}` },
 ];
 
 const getWeightliftingDay = () => [
@@ -158,40 +157,50 @@ const getWeightliftingDayOptions = () => {
   };
 };
 
-const timeOptions = (isSut) => {
-  if (isSut) {
-    return {
-      reply_markup: JSON.stringify({
-        inline_keyboard: sutTime.map((row) => {
-          return row.map((time) => {
-            return {
-              text: time,
-              callback_data: `scheduleTime~${time}`,
-            };
-          });
-        }),
+const getBoxDayOptions = () => {
+  return {
+    reply_markup: JSON.stringify({
+      inline_keyboard: getAvailableDays(getBoxDay()).map((day) => {
+        return [
+          {
+            text: `${day.day} ${day.date}`,
+            callback_data: `scheduleDay:${day.id}`,
+          },
+        ];
       }),
-    };
-  } else {
-    return {
-      reply_markup: JSON.stringify({
-        inline_keyboard: allTime.map((row) => {
-          return row.map((time) => {
-            return {
-              text: time,
-              callback_data: `scheduleTime~${time}`,
-            };
-          });
-        }),
+    }),
+  };
+};
+
+const timeOptions = () => {
+  return {
+    reply_markup: JSON.stringify({
+      inline_keyboard: allTime.map((row) => {
+        return row.map((time) => {
+          return {
+            text: time,
+            callback_data: `scheduleTime~${time}`,
+          };
+        });
       }),
-    };
-  }
+    }),
+  };
 };
 
 const stretchingTimeOptions = (nightTime) => {
   return {
     reply_markup: JSON.stringify({
       inline_keyboard: nightTime ? stretchingNightTime : stretchingTime,
+    }),
+  };
+};
+
+const boxTimeOptions = () => {
+  return {
+    reply_markup: JSON.stringify({
+      inline_keyboard: [
+        [{ text: "16:00", callback_data: `scheduleTime~16:00` }],
+      ],
     }),
   };
 };
@@ -217,8 +226,10 @@ module.exports = {
   getScheduleAllDayOptions,
   getWeightliftingDayOptions,
   getStretchingDayOptions,
+  getBoxDayOptions,
   timeOptions,
   weightliftingTimeOptions,
   stretchingTimeOptions,
+  boxTimeOptions,
   days,
 };
