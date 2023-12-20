@@ -16,9 +16,11 @@ const {
   workoutTypeOptions,
   getWeightliftingDayOptions,
   getStretchingDayOptions,
+  getBoxDayOptions,
   timeOptions,
   weightliftingTimeOptions,
   stretchingTimeOptions,
+  boxTimeOptions,
   getScheduleAllDayOptions,
   infoCommandOptions,
   days,
@@ -270,6 +272,19 @@ bot.onText(
               stretchingTimeOptions,
               "stretching"
             )
+          );
+        }
+        if (data === "box") {
+          bot.removeAllListeners("callback_query");
+
+          await bot.sendMessage(
+            currentChatId,
+            "Доступные дни",
+            getBoxDayOptions()
+          );
+
+          bot.addListener("callback_query", (query) =>
+            scheduleDayHandler(query, currentChatId, boxTimeOptions, "box")
           );
         }
         if (data === "free") {

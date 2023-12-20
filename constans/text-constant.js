@@ -42,6 +42,7 @@ const workoutNames = {
   weightlifting: "Тяжелую атлетику",
   stretching: "Стретчинг",
   free: "Бесплатную тренировку",
+  box: "Бокс",
 };
 
 module.exports = {

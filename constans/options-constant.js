@@ -35,12 +35,12 @@ const days = [
   "Пятница",
   "Суббота",
 ];
-const allTime = [
-  ["7:00", "8:00"],
+/* ["7:00", "8:00"],
   ["9:00", "10:00"],
-  ["11:00", "12:00"],
-  ["13:00", "14:00"],
-  ["15:00"],
+  ["11:00", "12:00"], */
+const allTime = [
+  ["12:00", "13:00"],
+  ["14:00", "15:00"],
   ["18:00", "19:00"],
   ["20:00"],
 ];
@@ -64,6 +64,7 @@ const workoutType = [
   [{ text: "Кроссфит", callback_data: "crossfit" }],
   [{ text: "Тяжелая атлетика", callback_data: "weightlifting" }],
   [{ text: "Stretching", callback_data: "stretching" }],
+  [{ text: "Бокс для детей", callback_data: "box" }],
   [{ text: "Пробная бесплатная тренировка", callback_data: "free" }],
 ];
 
@@ -99,6 +100,10 @@ const getScheduleAllDay = () => [
 const getStretchingDay = () => [
   { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
   { id: 6, day: days[6], date: `${getScheduleDate(6)}` },
+];
+
+const getBoxDay = () => [
+  { id: 4, day: days[4], date: `${getScheduleDate(4)}` },
 ];
 
 const getWeightliftingDay = () => [
@@ -152,6 +157,21 @@ const getWeightliftingDayOptions = () => {
   };
 };
 
+const getBoxDayOptions = () => {
+  return {
+    reply_markup: JSON.stringify({
+      inline_keyboard: getAvailableDays(getBoxDay()).map((day) => {
+        return [
+          {
+            text: `${day.day} ${day.date}`,
+            callback_data: `scheduleDay:${day.id}`,
+          },
+        ];
+      }),
+    }),
+  };
+};
+
 const timeOptions = () => {
   return {
     reply_markup: JSON.stringify({
@@ -171,6 +191,16 @@ const stretchingTimeOptions = (nightTime) => {
   return {
     reply_markup: JSON.stringify({
       inline_keyboard: nightTime ? stretchingNightTime : stretchingTime,
+    }),
+  };
+};
+
+const boxTimeOptions = () => {
+  return {
+    reply_markup: JSON.stringify({
+      inline_keyboard: [
+        [{ text: "16:00", callback_data: `scheduleTime~16:00` }],
+      ],
     }),
   };
 };
@@ -196,8 +226,10 @@ module.exports = {
   getScheduleAllDayOptions,
   getWeightliftingDayOptions,
   getStretchingDayOptions,
+  getBoxDayOptions,
   timeOptions,
   weightliftingTimeOptions,
   stretchingTimeOptions,
+  boxTimeOptions,
   days,
 };
