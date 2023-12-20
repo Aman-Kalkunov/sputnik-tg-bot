@@ -16,9 +16,11 @@ const {
   workoutTypeOptions,
   getWeightliftingDayOptions,
   getStretchingDayOptions,
+  getBoxDayOptions,
   timeOptions,
   weightliftingTimeOptions,
   stretchingTimeOptions,
+  boxTimeOptions,
   getScheduleAllDayOptions,
   infoCommandOptions,
   days,
@@ -121,8 +123,7 @@ const scheduleDayHandler = async (
       const id = query.data.split(":")[1];
 
       const isNightTime = workoutName === "stretching" && id == 3;
-      const isSut = (workoutName === "crossfit" || workoutName === "free") && id == 6;
-      const options = timeOptions(isNightTime || isSut);
+      const options = timeOptions(isNightTime);
 
       await bot.sendMessage(currentChatId, "Доступное время", options);
 
@@ -271,6 +272,19 @@ bot.onText(
               stretchingTimeOptions,
               "stretching"
             )
+          );
+        }
+        if (data === "box") {
+          bot.removeAllListeners("callback_query");
+
+          await bot.sendMessage(
+            currentChatId,
+            "Доступные дни",
+            getBoxDayOptions()
+          );
+
+          bot.addListener("callback_query", (query) =>
+            scheduleDayHandler(query, currentChatId, boxTimeOptions, "box")
           );
         }
         if (data === "free") {
