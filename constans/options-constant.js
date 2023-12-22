@@ -45,6 +45,8 @@ const allTime = [
   ["20:00"],
 ];
 
+const saturdayTime = [["10:00"], ["11:00"], ["12:00"]];
+
 const infoOptions = [
   [
     { text: "О нас", callback_data: "about" },
@@ -172,17 +174,26 @@ const getBoxDayOptions = () => {
   };
 };
 
-const timeOptions = () => {
+const timeOptions = (isSaturday) => {
   return {
     reply_markup: JSON.stringify({
-      inline_keyboard: allTime.map((row) => {
-        return row.map((time) => {
-          return {
-            text: time,
-            callback_data: `scheduleTime~${time}`,
-          };
-        });
-      }),
+      inline_keyboard: isSaturday
+        ? saturdayTime.map((row) => {
+            return row.map((time) => {
+              return {
+                text: time,
+                callback_data: `scheduleTime~${time}`,
+              };
+            });
+          })
+        : allTime.map((row) => {
+            return row.map((time) => {
+              return {
+                text: time,
+                callback_data: `scheduleTime~${time}`,
+              };
+            });
+          }),
     }),
   };
 };
