@@ -38,12 +38,7 @@ const days = [
 /* ["7:00", "8:00"],
   ["9:00", "10:00"],
   ["11:00", "12:00"], */
-const allTime = [
-  ["12:00", "13:00"],
-  ["14:00", "15:00"],
-  ["18:00", "19:00"],
-  ["20:00"],
-];
+const allTime = [["10:00", "11:00"], ["18:00", "19:00"], ["20:00"]];
 
 const saturdayTime = [["10:00"], ["11:00"], ["12:00"]];
 
@@ -84,7 +79,9 @@ const infoCommandOptions = {
 
 const weightliftingTime = ["17:00"];
 
-const stretchingTime = [[{ text: "9:00", callback_data: `scheduleTime~9:00` }]];
+const stretchingTime = [
+  [{ text: "10:00", callback_data: `scheduleTime~10:00` }],
+];
 
 const stretchingNightTime = [
   [{ text: "19:00", callback_data: `scheduleTime~19:00` }],
