@@ -1,3 +1,28 @@
+// Будние дни, кроссфит и пробные тренировки
+const allTime = [
+  ["7:00", "8:00"],
+  ["9:00", "10:00"],
+  ["11:00"],
+  ["18:00", "19:00"],
+  ["20:00"],
+];
+
+// Выходные дни, кроссфит и пробные тренировки
+const saturdayTime = [["10:00"], ["11:00"], ["12:00"]];
+
+// Тяжелая атлетика
+const weightliftingTime = ["17:00"];
+
+// Стретчинг среда
+const stretchingNightTime = [
+  [{ text: "19:00", callback_data: `scheduleTime~19:00` }],
+];
+
+// Стретчинг суббота
+const stretchingTime = [
+  [{ text: "10:00", callback_data: `scheduleTime~10:00` }],
+];
+
 const getScheduleDate = (targetDayId, isWeightliftin) => {
   const today = new Date();
   const currentDay = today.getDay();
@@ -36,16 +61,6 @@ const days = [
   "Суббота",
 ];
 
-const allTime = [
-  ["7:00", "8:00"],
-  ["9:00", "10:00"],
-  ["11:00"],
-  ["18:00", "19:00"],
-  ["20:00"],
-];
-
-const saturdayTime = [["10:00"], ["11:00"], ["12:00"]];
-
 const infoOptions = [
   [
     { text: "О нас", callback_data: "about" },
@@ -80,16 +95,6 @@ const infoCommandOptions = {
     inline_keyboard: infoOptions,
   }),
 };
-
-const weightliftingTime = ["17:00"];
-
-const stretchingTime = [
-  [{ text: "10:00", callback_data: `scheduleTime~10:00` }],
-];
-
-const stretchingNightTime = [
-  [{ text: "19:00", callback_data: `scheduleTime~19:00` }],
-];
 
 const getScheduleAllDay = () => [
   { id: 1, day: days[1], date: `${getScheduleDate(1)}` },
