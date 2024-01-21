@@ -23,6 +23,9 @@ const stretchingTime = [
   [{ text: "10:00", callback_data: `scheduleTime~10:00` }],
 ];
 
+// Бокс для детей
+const boxTime = [[{ text: "16:00", callback_data: `scheduleTime~16:00` }]];
+
 const getScheduleDate = (targetDayId, isWeightliftin) => {
   const today = new Date();
   const currentDay = today.getDay();
@@ -215,9 +218,7 @@ const stretchingTimeOptions = (nightTime) => {
 const boxTimeOptions = () => {
   return {
     reply_markup: JSON.stringify({
-      inline_keyboard: [
-        [{ text: "16:00", callback_data: `scheduleTime~16:00` }],
-      ],
+      inline_keyboard: boxTime,
     }),
   };
 };
