@@ -1,6 +1,5 @@
 const TelegramApi = require("node-telegram-bot-api");
 const adminId = 1991291074;
-const devId = 540756101;
 const token = "6580839606:AAFH19wqumqjaULUFP2Q2eXAvBT6LqEcHHA";
 const {
   startText,
@@ -41,7 +40,7 @@ const asyncErrorHandler = (fn) => {
     } catch (error) {
       console.error("Произошла ошибка:", error);
       bot.sendMessage(
-        devId,
+        adminId,
         `Произошла ошибка asyncErrorHandler: ${error.message}`
       );
     }
@@ -61,7 +60,7 @@ const sayHello = async (currentChatId) => {
   try {
     await bot.sendMessage(currentChatId, startText);
   } catch (error) {
-    bot.sendMessage(devId, `Произошла ошибка sayHello: ${error.message}`);
+    bot.sendMessage(adminId, `Произошла ошибка sayHello: ${error.message}`);
   }
 };
 
@@ -74,7 +73,7 @@ const questionHandler = async (message) => {
     bot.removeListener("message");
   } catch (error) {
     bot.sendMessage(
-      devId,
+      adminId,
       `Произошла ошибка questionHandler: ${error.message}`
     );
   }
@@ -103,7 +102,7 @@ const scheduleHandler = async (query, id, workoutName) => {
     }
   } catch (error) {
     bot.sendMessage(
-      devId,
+      adminId,
       `Произошла ошибка scheduleHandler: ${error.message}`
     );
   }
@@ -135,7 +134,7 @@ const scheduleDayHandler = async (
     }
   } catch (error) {
     bot.sendMessage(
-      devId,
+      adminId,
       `Произошла ошибка scheduleDayHandler: ${error.message}`
     );
   }
@@ -203,7 +202,7 @@ bot.onText(
           );
         }
       } catch (error) {
-        bot.sendMessage(devId, `Произошла ошибка info: ${error.message}`);
+        bot.sendMessage(adminId, `Произошла ошибка info: ${error.message}`);
       }
     });
   })
@@ -303,7 +302,7 @@ bot.onText(
           );
         }
       } catch (error) {
-        bot.sendMessage(devId, `Произошла ошибка schedule: ${error.message}`);
+        bot.sendMessage(adminId, `Произошла ошибка schedule: ${error.message}`);
       }
     });
   })
@@ -311,5 +310,5 @@ bot.onText(
 
 bot.on("polling_error", (error) => {
   console.error("Ошибка в polling:", error);
-  bot.sendMessage(devId, `Произошла ошибка polling: ${error.message}`);
+  //bot.sendMessage(adminId, `Произошла ошибка polling: ${error.message}`);
 });
