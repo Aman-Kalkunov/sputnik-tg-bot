@@ -124,7 +124,9 @@ const scheduleDayHandler = async (
       const isNightTime = workoutName === "stretching" && id == 3;
       const isSaturday =
         (workoutName === "crossfit" || workoutName === "free") && id == 6;
-      const options = timeOptions(isNightTime || isSaturday);
+      const isMonday =
+        (workoutName === "crossfit" || workoutName === "free") && id == 1;
+      const options = timeOptions(isNightTime || isSaturday, isMonday);
 
       await bot.sendMessage(currentChatId, "Доступное время", options);
 
