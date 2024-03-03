@@ -1,11 +1,8 @@
 // Будние дни, кроссфит и пробные тренировки
-const allTime = [
-  ["7:00", "8:00"],
-  ["9:00", "10:00"],
-  ["11:00"],
-  ["18:00", "19:00"],
-  ["20:00"],
-];
+const allTime = [["10:00", "11:00"], ["18:00", "19:00"], ["20:00"]];
+
+// Выходные дни, кроссфит и пробные тренировки
+const mondayTime = [["10:00", "11:00"], ["18:00", "19:00"], ["20:00"]];
 
 // Выходные дни, кроссфит и пробные тренировки
 const saturdayTime = [["10:00"], ["11:00"], ["12:00"]];
@@ -183,11 +180,20 @@ const getBoxDayOptions = () => {
   };
 };
 
-const timeOptions = (isSaturday) => {
+const timeOptions = (isSaturday, isMonday) => {
   return {
     reply_markup: JSON.stringify({
       inline_keyboard: isSaturday
         ? saturdayTime.map((row) => {
+            return row.map((time) => {
+              return {
+                text: time,
+                callback_data: `scheduleTime~${time}`,
+              };
+            });
+          })
+        : isMonday
+        ? mondayTime.map((row) => {
             return row.map((time) => {
               return {
                 text: time,
