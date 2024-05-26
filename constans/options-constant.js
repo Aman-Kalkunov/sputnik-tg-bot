@@ -84,7 +84,7 @@ const infoOptions = [
 const workoutType = [
   [{ text: "Кроссфит", callback_data: "crossfit" }],
   [{ text: "Тяжелая атлетика", callback_data: "weightlifting" }],
-  [{ text: "Stretching", callback_data: "stretching" }],
+  // [{ text: "Stretching", callback_data: "stretching" }],
   [{ text: "Бокс для детей", callback_data: "box" }],
   [{ text: "Пробная бесплатная тренировка", callback_data: "free" }],
 ];
