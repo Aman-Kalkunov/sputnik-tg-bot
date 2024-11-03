@@ -123,7 +123,8 @@ const scheduleDayHandler = async (
 
       const isNightTime = workoutName === "stretching" && (id == 3 || id == 5);
       const isSaturday =
-        (workoutName === "crossfit" || workoutName === "free") && id == 6;
+        (workoutName === "crossfit" || workoutName === "free") &&
+        (id == 6 || id == 1);;
       const isMonday =
         (workoutName === "crossfit" || workoutName === "free") &&
         (id == 3 || id == 5);
