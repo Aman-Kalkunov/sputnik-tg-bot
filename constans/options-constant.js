@@ -1,11 +1,11 @@
 // Будние дни, кроссфит и пробные тренировки
-const allTime = [["18:00"], ["19:00"], ["20:00"]];
+const allTime = [["10:00"], ["11:00"]];
 
 // Понедельник, кроссфит и пробные тренировки
-const mondayTime = [["9:00", "10:00"], ["18:00"], ["19:00"], ["20:00"]];
+const mondayTime = [["10:00"], ["11:00"]];
 
 // Выходные дни, кроссфит и пробные тренировки
-const saturdayTime = [["18:00"], ["19:00"], ["20:00"]];
+const saturdayTime = [["10:00"], ["11:00"]];
 
 // Тяжелая атлетика
 const weightliftingTime = ["17:00"];
@@ -99,8 +99,8 @@ const infoCommandOptions = {
 const getScheduleAllDay = () => [
   { id: 1, day: days[1], date: `${getScheduleDate(1)}` },
   { id: 2, day: days[2], date: `${getScheduleDate(2)}` },
-  { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
-  { id: 4, day: days[4], date: `${getScheduleDate(4)}` },
+  // { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
+  // { id: 4, day: days[4], date: `${getScheduleDate(4)}` },
   { id: 5, day: days[5], date: `${getScheduleDate(5)}` },
   { id: 6, day: days[6], date: `${getScheduleDate(6)}` },
 ];
