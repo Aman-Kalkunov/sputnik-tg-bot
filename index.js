@@ -109,6 +109,7 @@ const scheduleHandler = async (query, id, workoutName) => {
 };
 
 const weekDays = [
+  "",
   "mondayTime",
   "tuesdayTime",
   "wednesdayTime",
