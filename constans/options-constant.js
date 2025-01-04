@@ -220,10 +220,10 @@ const timeOptions = (day) => {
   };
 };
 
-const stretchingTimeOptions = (nightTime) => {
+const stretchingTimeOptions = () => {
   return {
     reply_markup: JSON.stringify({
-      inline_keyboard: nightTime ? stretchingNightTime : stretchingTime,
+      inline_keyboard: stretchingNightTime,
     }),
   };
 };
