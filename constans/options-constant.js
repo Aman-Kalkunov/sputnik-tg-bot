@@ -1,12 +1,37 @@
 // Будние дни, кроссфит и пробные тренировки
-const allTime = [["11:00"], ["12:00"]];
+const allTime = [["18:00"], ["19:00"], ["20:00"]];
 
 // Понедельник, кроссфит и пробные тренировки
 const mondayTime = [["10:00"], ["11:00"]];
 
-// Выходные дни, кроссфит и пробные тренировки
-const saturdayTime = [["11:00"], ["12:00"]];
+// Вторник, кроссфит и пробные тренировки
+const tuesdayTime = [["11:00"], ["12:00"]];
 
+// Среда, кроссфит и пробные тренировки
+const wednesdayTime = [["10:00"], ["11:00"]];
+
+// Четверг, кроссфит и пробные тренировки
+const thursdayTime = [["18:00"], ["19:00"], ["20:00"]];
+
+// Пятница, кроссфит и пробные тренировки
+const fridayTime = [
+  ["9:00"],
+  ["10:00", "11:00"],
+  ["18:00", "19:00"],
+  ["20:00"],
+];
+
+// Выходные дни, кроссфит и пробные тренировки
+const saturdayTime = [["10:00"], ["11:00"], ["12:00"]];
+
+const crossDays = {
+  mondayTime: mondayTime,
+  tuesdayTime: tuesdayTime,
+  wednesdayTime: wednesdayTime,
+  thursdayTime: thursdayTime,
+  fridayTime: fridayTime,
+  saturdayTime: saturdayTime,
+};
 // Тяжелая атлетика
 const weightliftingTime = ["17:00"];
 
@@ -99,8 +124,8 @@ const infoCommandOptions = {
 const getScheduleAllDay = () => [
   { id: 1, day: days[1], date: `${getScheduleDate(1)}` },
   { id: 2, day: days[2], date: `${getScheduleDate(2)}` },
-  // { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
-  // { id: 4, day: days[4], date: `${getScheduleDate(4)}` },
+  { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
+  { id: 4, day: days[4], date: `${getScheduleDate(4)}` },
   { id: 5, day: days[5], date: `${getScheduleDate(5)}` },
   { id: 6, day: days[6], date: `${getScheduleDate(6)}` },
 ];
@@ -180,35 +205,17 @@ const getBoxDayOptions = () => {
   };
 };
 
-const timeOptions = (isSaturday, isMonday) => {
+const timeOptions = (day) => {
   return {
     reply_markup: JSON.stringify({
-      inline_keyboard: isSaturday
-        ? saturdayTime.map((row) => {
-            return row.map((time) => {
-              return {
-                text: time,
-                callback_data: `scheduleTime~${time}`,
-              };
-            });
-          })
-        : isMonday
-        ? mondayTime.map((row) => {
-            return row.map((time) => {
-              return {
-                text: time,
-                callback_data: `scheduleTime~${time}`,
-              };
-            });
-          })
-        : allTime.map((row) => {
-            return row.map((time) => {
-              return {
-                text: time,
-                callback_data: `scheduleTime~${time}`,
-              };
-            });
-          }),
+      inline_keyboard: crossDays[day].map((row) => {
+        return row.map((time) => {
+          return {
+            text: time,
+            callback_data: `scheduleTime~${time}`,
+          };
+        });
+      }),
     }),
   };
 };
