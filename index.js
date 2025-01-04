@@ -108,6 +108,15 @@ const scheduleHandler = async (query, id, workoutName) => {
   }
 };
 
+const weekDays = [
+  "mondayTime",
+  "tuesdayTime",
+  "wednesdayTime",
+  "thursdayTime",
+  "fridayTime",
+  "saturdayTime",
+];
+
 const scheduleDayHandler = async (
   query,
   currentChatId,
@@ -122,12 +131,7 @@ const scheduleDayHandler = async (
       const id = query.data.split(":")[1];
 
       const isNightTime = workoutName === "stretching" && (id == 3 || id == 5);
-      const isSaturday =
-        (workoutName === "crossfit" || workoutName === "free") && id == 6;
-      const isMonday =
-        (workoutName === "crossfit" || workoutName === "free") &&
-        (id == 1 || id == 3 || id == 5);
-      const options = timeOptions(isNightTime || isSaturday, isMonday);
+      const options = timeOptions(isNightTime, weekDays[id]);
 
       await bot.sendMessage(currentChatId, "Доступное время", options);
 
