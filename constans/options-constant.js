@@ -44,7 +44,7 @@ const weightliftingTime = ["17:00"];
 
 // Стретчинг среда
 const stretchingNightTime = [
-  [{ text: "10:00", callback_data: `scheduleTime~10:00` }],
+  [{ text: "11:00", callback_data: `scheduleTime~11:00` }],
 ];
 
 // Стретчинг суббота
