@@ -138,7 +138,7 @@ const getScheduleAllDay = () => [
 ];
 
 const getStretchingDay = () => [
-  { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
+  { id: 1, day: days[1], date: `${getScheduleDate(1)}` },
   { id: 5, day: days[5], date: `${getScheduleDate(5)}` },
 ];
 
