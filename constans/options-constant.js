@@ -44,7 +44,7 @@ const weightliftingTime = ["17:00"];
 
 // Стретчинг среда
 const stretchingNightTime = [
-  [{ text: "19:00", callback_data: `scheduleTime~19:00` }],
+  [{ text: "11:00", callback_data: `scheduleTime~11:00` }],
 ];
 
 // Стретчинг суббота
@@ -139,7 +139,7 @@ const getScheduleAllDay = () => [
 
 const getStretchingDay = () => [
   { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
-  { id: 5, day: days[5], date: `${getScheduleDate(5)}` },
+  { id: 6, day: days[6], date: `${getScheduleDate(6)}` },
 ];
 
 const getBoxDay = () => [
