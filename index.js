@@ -1,6 +1,6 @@
 const TelegramApi = require("node-telegram-bot-api");
 const adminId = 1991291074;
-const token = "6580839606:AAFH19wqumqjaULUFP2Q2eXAvBT6LqEcHHA";
+const token = "6580839606:AAHl4sYCaCQy1CU0KdeeSkBFZUXpS7MKEsg";
 const {
   startText,
   promotionsText,
