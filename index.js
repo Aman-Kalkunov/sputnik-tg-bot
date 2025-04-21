@@ -1,6 +1,9 @@
+require("dotenv").config();
+
 const TelegramApi = require("node-telegram-bot-api");
-const adminId = 1991291074;
-const token = "6580839606:AAHl4sYCaCQy1CU0KdeeSkBFZUXpS7MKEsg";
+const token = process.env.TELEGRAM_TOKEN;
+const adminId = Number(process.env.ADMIN_ID);
+
 const {
   startText,
   promotionsText,
