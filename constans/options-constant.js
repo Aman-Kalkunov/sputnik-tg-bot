@@ -3,7 +3,7 @@ const allTime = [["18:00"], ["19:00"], ["20:00"]];
 
 // Понедельник, кроссфит и пробные тренировки
 const mondayTime = [
-  ["9:00", "10:00"],
+  ["9:00"],
   ["18:00", "19:00"],
   ["20:00"],
 ];
@@ -139,7 +139,7 @@ const getScheduleAllDay = () => [
 
 const getStretchingDay = () => [
   { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
-  // { id: 5, day: days[5], date: `${getScheduleDate(5)}` },
+  { id: 5, day: days[5], date: `${getScheduleDate(5)}` },
 ];
 
 const getBoxDay = () => [
