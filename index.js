@@ -134,9 +134,14 @@ const scheduleDayHandler = async (
 
       const id = query.data.split(":")[1];
 
-      // const isNightTime = workoutName === "stretching" && (id == 3 || id == 5);
-      const options = timeOptions(weekDays[id]);
-
+      const isNightTime = workoutName === "stretching" && (id == 3 || id == 5);
+      let options;
+      
+      if (workoutName === "stretching") {
+        options = timeOptions(isNightTime);
+      } else {
+        options = timeOptions(weekDays[id]);
+      }
       await bot.sendMessage(currentChatId, "Доступное время", options);
 
       bot.addListener("callback_query", (query) =>
