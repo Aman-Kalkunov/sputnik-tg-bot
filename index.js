@@ -134,7 +134,7 @@ const scheduleDayHandler = async (
 
       const id = query.data.split(":")[1];
 
-      const isNightTime = workoutName === "stretching" && (id == 3 || id == 5);
+      const isNightTime = workoutName === "stretching" && (id == 1 || id == 5);
       let options;
       
       if (workoutName === "stretching") {
