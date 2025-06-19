@@ -19,7 +19,7 @@ const wednesdayTime = [
 ];
 
 // Четверг, кроссфит и пробные тренировки
-const thursdayTime = [["10:00"], ["11:00"]];
+const thursdayTime = [["18:00"], ["19:00"], ["20:00"]];
 
 // Пятница, кроссфит и пробные тренировки
 const fridayTime = [
