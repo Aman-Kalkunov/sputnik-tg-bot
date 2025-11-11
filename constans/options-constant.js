@@ -127,8 +127,8 @@ const infoCommandOptions = {
 const getScheduleAllDay = () => [
   // { id: 1, day: days[1], date: `${getScheduleDate(1)}` },
   // { id: 2, day: days[2], date: `${getScheduleDate(2)}` },
-  { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
-  { id: 4, day: days[4], date: `${getScheduleDate(4)}` },
+  // { id: 3, day: days[3], date: `${getScheduleDate(3)}` },
+  // { id: 4, day: days[4], date: `${getScheduleDate(4)}` },
   { id: 5, day: days[5], date: `${getScheduleDate(5)}` },
   { id: 6, day: days[6], date: `${getScheduleDate(6)}` },
 ];
